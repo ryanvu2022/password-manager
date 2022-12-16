@@ -67,11 +67,21 @@ def find_password():
         messagebox.showinfo(title="Error", message="No Data File Found.")
     else:
         if website in data:
-            messagebox.showinfo(title=website, message=f"Email: {data[website]['email']}\nPassword: {data[website]['password']}")
+            messagebox.showinfo(title=website, message=f"Email:          {data[website]['email']}"
+                                                       f"\nPassword:   {data[website]['password']}"
+                                                       f"\n"
+                                                       f"\nPassword has been copied to the clipboard.")
+            pyperclip.copy(data[website]['password'])
         else:
             messagebox.showinfo(title="Error", message=f"No details for {website} exists")
     finally:
         website_entry.delete(0, END)
+
+
+def clear_entries():
+    website_entry.delete(0, END)
+    email_entry.delete(0, END)
+    password_entry.delete(0, END)
 
 
 window = Tk()
@@ -97,25 +107,28 @@ password_label.config(pady=5)
 password_label.grid(row=3, column=0)
 
 # Entries
-website_entry = Entry(width=27)
+website_entry = Entry()
 website_entry.focus()
-website_entry.grid(row=1, column=1)
+website_entry.grid(row=1, column=1, sticky="EW")
 
-email_entry = Entry(width=45)
+email_entry = Entry()
 email_entry.insert(0, "ryanvu2022@gmail.com")
-email_entry.grid(row=2, column=1, columnspan=2)
+email_entry.grid(row=2, column=1, sticky="EW")
 
-password_entry = Entry(width=45)
-password_entry.grid(row=3, column=1, columnspan=2)
+password_entry = Entry()
+password_entry.grid(row=3, column=1, columnspan=2, sticky="EW")
 
 # Buttons
-search_button = Button(text="Search", width=14, command=find_password)
-search_button.grid(row=1, column=2)
+search_button = Button(text="Search", command=find_password)
+search_button.grid(row=1, column=2, sticky="EW")
+
+clear_button = Button(text="Clear All", command=clear_entries)
+clear_button.grid(row=2, column=2, sticky="EW")
 
 password_button = Button(text="Generate Password", command=generate_password)
-password_button.grid(row=3, column=2)
+password_button.grid(row=3, column=2, sticky="EW")
 
-add_button = Button(text="Add", width=38, command=save_password)
-add_button.grid(row=4, column=1, columnspan=2)
+add_button = Button(text="Add", width=35, command=save_password)
+add_button.grid(row=4, column=1, columnspan=2, sticky="EW")
 
 window.mainloop()
