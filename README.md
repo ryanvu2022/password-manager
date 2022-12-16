@@ -9,4 +9,4 @@ The application is built with Python, Tkinter for GUI, and pyperclip.
 - If user clicks "Ok", then info will be saved to a text file.
 - "Add" button only works if none of three inputs is empty, otherwise a warning message will pop up.
 
-![](password-generator.png)
+![](screenshot.png)
