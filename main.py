@@ -37,20 +37,25 @@ def save_password():
     if len(website) == 0 or len(email) == 0 or len(password) == 0:
         messagebox.showinfo(title="Oops", message="Please don't leave any fields empty!")
     else:
-        with open("data.json", "r") as file:
-            # Reading old data
-            data = json.load(file)
+        try:
+            with open("data.json", "r") as file:
+                # Reading old data
+                data = json.load(file)
+        except FileNotFoundError:
+            with open("data.json", "w") as file:
+                json.dump(new_data, file, indent=4)
+        else:
             # Updating old data with new data
             data.update(new_data)
-        with open("data.json", "w") as file:
-            # Saving updated data
-            json.dump(data, file, indent=4)
-
-        website_entry.delete(0, END)
-        email_entry.delete(0, END)
-        email_entry.insert(0, "ryanvu2022@gmail.com")
-        password_entry.delete(0, END)
-        website_entry.focus()
+            with open("data.json", "w") as file:
+                # Saving updated data
+                json.dump(data, file, indent=4)
+        finally:
+            website_entry.delete(0, END)
+            email_entry.delete(0, END)
+            email_entry.insert(0, "ryanvu2022@gmail.com")
+            password_entry.delete(0, END)
+            website_entry.focus()
 
 
 window = Tk()
@@ -88,11 +93,13 @@ password_entry = Entry(width=45)
 password_entry.grid(row=3, column=1, columnspan=2)
 
 # Buttons
+search_button = Button(text="Search", width=14)
+search_button.grid(row=1, column=2)
+
 password_button = Button(text="Generate Password", command=generate_password)
 password_button.grid(row=3, column=2)
 
 add_button = Button(text="Add", width=38, command=save_password)
 add_button.grid(row=4, column=1, columnspan=2)
-
 
 window.mainloop()
